@@ -15,6 +15,8 @@
 //4 L: Turret 11328218 R: SAM 26675114, Nothing 26675021
 //5 L: Turret 13006497 R: Nothing 11545782
 
+//Twix's PlayerID + Token: 76561198124218884 , -443236188
+
 console.log("Starting");
 const RustPlus = require('@liamcottle/rustplus.js');
 var rustplus = new RustPlus('208.52.152.118', '28145', '76561198124218884', '-443236188');
@@ -24,7 +26,7 @@ const turretSwitches = ['9331004','9332360', '9321241', '9334053', '9325142',
                         '11311303', '17411035', '12496557', '11274989', '17404490', '11328218', '13006497']
 const lightSwitches = ['10723613']
 const heatSwitches = ['76576392']
-const tcStorageMonitors = ['76132494']
+const StorageMonitors = ['82964708', '76132494', '82972481', '82974226', '82975650', '82978546', '82980151']
 
 // connect to rust server
 rustplus.connect();
@@ -128,11 +130,35 @@ rustplus.on('message', (message) => {
     rustplus.sendTeamMessage("BOT: Heater switches off");
   }
   else if(str.includes('!upkeep')){
-    for(var i = 0; i < tcStorageMonitors.length; ++i){
-      rustplus.getEntityInfo(tcStorageMonitors[i], (mess) =>{
-        console.log(JSON.stringify(mess));
-        //console.log(JSON.stringify(mess));
-        rustplus.sendTeamMessage("Gate " + (i + 1) + " has: " );
+    for(let i = 0; i < StorageMonitors.length; ++i){
+      rustplus.getEntityInfo(StorageMonitors[i], (mess) =>{
+        var st = JSON.stringify(mess);
+        //console.log(st);
+
+        var start = st.search("protectionExpiry");
+        st = st.slice(start);
+        var end = st.search("}");
+        st = st.slice(18, end); //Hard Coded, yes I know its bad. 
+
+        var rawTime = parseInt(st);
+        //console.log(st);
+
+        let day = 86400;
+        let hour = 3600;
+        let minute = 60;
+
+        let decayTime = Math.floor((rawTime*1000 - Date.now()) / 1000);
+        let days = Math.floor(decayTime / day);
+        let hours = Math.floor((decayTime - days * day) / hour);
+        let minutes = Math.floor((decayTime - days * day - hours * hour) / minute);
+        let seconds = decayTime - days * day - hours * hour - minutes * minute;
+        //I want to put everything above this into a helper function but I'm not sure how to do that in NodeJS yet. 
+        if(i == 0){
+          rustplus.sendTeamMessage("MAIN TC:    " + days + "D " + hours + "H " + minutes + "M " + seconds + "S");
+        } else{
+          rustplus.sendTeamMessage("GATE " + (i) + ":      " + days + "D " + hours + "H " + minutes + "M " + seconds + "S");
+        }
+        
       });
           
     }

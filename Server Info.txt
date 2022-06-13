@@ -1,0 +1,14 @@
+[6/12/2022, 4:33:31 PM] Notification Received
+{
+  img: 'https://i.imgur.com/TnzOQ1I.png',
+  port: '28145',
+  ip: '208.52.152.118',
+  name: 'Rustopia US Small',
+  logo: 'https://i.imgur.com/kXUaoAw.png',
+  id: 'b051f749-ea66-4399-b322-372314ef735d',
+  type: 'server',
+  url: '',
+  desc: "Map Wipe - Monthly\\nBp's Wipe Bi-Monthly\\nDiscord.gg/Rustopia\\n\\nRules:\\nNo Vac Bans or Gamebans under 180 Days\\nNo Alts with EAC banned accounts\\nNo Racial Comments\\nEnglish Chat Only\\n\\nVisit Rustopia.gg",
+  playerId: '76561198124218884',
+  playerToken: '-443236188'
+}

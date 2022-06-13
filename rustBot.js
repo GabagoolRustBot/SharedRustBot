@@ -17,13 +17,14 @@
 
 console.log("Starting");
 const RustPlus = require('@liamcottle/rustplus.js');
-var rustplus = new RustPlus('208.52.152.118', '28145', '76561198050799967', '-841804922');
+var rustplus = new RustPlus('208.52.152.118', '28145', '76561198124218884', '-443236188');
 const samSwitches = ['26618389', '11276478', '26675114', '9229886', '26034625']
 const turretSwitches = ['9331004','9332360', '9321241', '9334053', '9325142', 
                         '20002729',
                         '11311303', '17411035', '12496557', '11274989', '17404490', '11328218', '13006497']
 const lightSwitches = ['10723613']
 const heatSwitches = ['76576392']
+const tcStorageMonitors = ['76132494']
 
 // connect to rust server
 rustplus.connect();
@@ -126,6 +127,18 @@ rustplus.on('message', (message) => {
     }
     rustplus.sendTeamMessage("BOT: Heater switches off");
   }
+  else if(str.includes('!upkeep')){
+    for(var i = 0; i < tcStorageMonitors.length; ++i){
+      rustplus.getEntityInfo(tcStorageMonitors[i], (mess) =>{
+        var timeRemaining = mess.capacity;
+        console.log(JSON.stringify(timeRemaining));
+        //console.log(JSON.stringify(mess));
+        rustplus.sendTeamMessage("Gate " + (i + 1) + " has: " );
+      });
+          
+    }
+    
+  }
   else if(str.includes('!rockets')){
     rustplus.sendTeamMessage("BOT: The rockets exist");
   }
@@ -151,29 +164,28 @@ rustplus.on('message', (message) => {
   
 });
 //Storage Monitor changes
-/*rustplus.on('message', (message) => {
-  if(message.broadcast && message.broadcast.entityChanged){
-
-      var entityChanged = message.broadcast.entityChanged;
+// rustplus.on('message', (message) => {
+//   if(message.broadcast && message.broadcast.entityChanged){
+//       var entityChanged = message.broadcast.entityChanged;
   
-      var entityId = entityChanged.entityId;
-      var value = entityChanged.payload.value;
-      var capacity = entityChanged.payload.capacity;
-      var items = entityChanged.payload.items;
+//       var entityId = entityChanged.entityId;
+//       var value = entityChanged.payload.value;
+//       var capacity = entityChanged.payload.capacity;
+//       var items = entityChanged.payload.items;
       
-      // only print info when second broadcast is received
-      if(!value){
+//       // only print info when second broadcast is received
+//       if(!value){
 
-          console.log(`entity ${entityId} has a capacity of ${capacity}`);
-          console.log(`entity ${entityId} contains ${items.length} item(s)`);
+//           console.log(`entity ${entityId} has a capacity of ${capacity}`);
+//           console.log(`entity ${entityId} contains ${items.length} item(s)`);
           
-          // print out the items in this storage entity
-          items.forEach((item) => {
-              console.log(item);
-          });
-      }
-  }
-});*/
+//           // print out the items in this storage entity
+//           items.forEach((item) => {
+//               console.log(item);
+//           });
+//       }
+//   }
+// });
 //Log all messages
 //rustplus.on('message', (message) => {
   //console.log("message received: " + JSON.stringify(message));

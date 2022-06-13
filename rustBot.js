@@ -130,8 +130,7 @@ rustplus.on('message', (message) => {
   else if(str.includes('!upkeep')){
     for(var i = 0; i < tcStorageMonitors.length; ++i){
       rustplus.getEntityInfo(tcStorageMonitors[i], (mess) =>{
-        var timeRemaining = mess.capacity;
-        console.log(JSON.stringify(timeRemaining));
+        console.log(JSON.stringify(mess));
         //console.log(JSON.stringify(mess));
         rustplus.sendTeamMessage("Gate " + (i + 1) + " has: " );
       });

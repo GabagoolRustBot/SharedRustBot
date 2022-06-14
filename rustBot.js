@@ -15,12 +15,12 @@
 //4 L: Turret 11328218 R: SAM 26675114, Nothing 26675021
 //5 L: Turret 13006497 R: Nothing 11545782
 
-//Twix's PlayerID + Token: 76561198124218884 , -443236188
-
 console.log("Starting");
 const RustPlus = require('@liamcottle/rustplus.js');
-var rustplus = new RustPlus('208.52.152.118', '28145', '76561198050799967', '-841804922'); // Ryan
-//var rustplus = new RustPlus('208.52.152.118', '28145', '76561198124218884', '-443236188'); // Twix
+//var rustplus = new RustPlus('208.52.152.118', '28145', '76561198050799967', '-841804922'); // Ryan
+var rustplus = new RustPlus('208.52.152.118', '28145', '76561198124218884', '-443236188'); // Twix
+
+//Entity IDs for interactable in-game objects. 
 const samSwitches = ['26618389', '11276478', '26675114', '9229886', '26034625']
 const turretSwitches = ['9331004','9332360', '9321241', '9334053', '9325142', 
                         '20002729',

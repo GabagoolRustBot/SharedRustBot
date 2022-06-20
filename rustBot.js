@@ -3,6 +3,7 @@
 const process = require('process');
 const RustPlus = require("@liamcottle/rustplus.js");
 const userData = require("./user.json")
+const assets = require("./assets.json")
 
 //String for name of JSON file being read (as opposed to hardcoding), can be changed via arguments later
 var pathString = "testData.json"//Using hardcoding for testing
@@ -74,6 +75,8 @@ function genericSwitch(switchType, switchPosition){
 }
 
 //BOT START----------------------------------
+//Banner
+assets.banner.forEach(x => {console.log(x)})
 
 //JSON server data used instead of hardcoding 
 var rustplus = new RustPlus(jData.serverIP, jData.serverPort, userData.userID, userData.userToken);

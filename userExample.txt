@@ -1,0 +1,6 @@
+Create a "user.json" with your information as shown and place in root directory
+
+{
+  "userID": "1234567",
+  "userToken": "1234567",
+}

@@ -6,7 +6,7 @@ const userData = require("./user.json")
 const assets = require("./assets.json")
 
 //String for name of JSON file being read (as opposed to hardcoding), can be changed via arguments later
-var pathString = "testData.json"//Using hardcoding for testing
+var pathString = "server.json"//Using hardcoding for testing
 //var pathString = process.argv[2]//First arg in command line call = path to json, or just filename if in root
 var jData = require("./" + pathString)
 

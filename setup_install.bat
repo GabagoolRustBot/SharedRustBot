@@ -1,2 +1,2 @@
-npm install -g @liamcottle/rustplus.js
+npm install @liamcottle/rustplus.js
 PAUSE

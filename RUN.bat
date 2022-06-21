@@ -1,0 +1,2 @@
+node rustBot.js
+PAUSE

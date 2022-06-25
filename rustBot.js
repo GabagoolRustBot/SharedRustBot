@@ -4,11 +4,15 @@ const process = require('process');
 const RustPlus = require("@liamcottle/rustplus.js");
 const userData = require("./user.json")
 const assets = require("./assets.json")
+//const { register, listen } = require('push-receiver');     //For listener if added back
+const fs = require('fs');
 
 //String for name of JSON file being read (as opposed to hardcoding), can be changed via arguments later
 var pathString = "server.json"//Using hardcoding for testing
 //var pathString = process.argv[2]//First arg in command line call = path to json, or just filename if in root
 var jData = require("./" + pathString)
+//Config JSON if needed later
+var configJSON = require("./rustplus.config.json")
 
 //Outer scope declaration of ID arrays
 var turretSwitches
@@ -72,6 +76,38 @@ function genericSwitch(switchType, switchPosition){
       rustplus.sendTeamMessage("BOT: " + switchType + " on");
       break      
   }
+}
+
+//Append data to JSON. Takes data to append and the key to append to as string (TurretSwitches etc). 
+function appendJSON (newData, key){
+  fs.readFile("./" + pathString, 'utf8', function readFileCallback(err, data){
+    if (err){
+      console.log(err);
+    }
+    else{
+    obj = JSON.parse(data); 
+    //Switch keys in JSON for match
+    switch(key){
+      case "Turrets":
+        obj.turretSwitches.push(newData);
+        break
+      case "SAMs":
+        obj.samSwitches.push(newData);
+        break
+      case "Lights":
+        obj.lightSwitches.push(newData);
+        break
+      case "Heaters":
+        obj.heaterSwitches.push(newData);
+        break
+      case "Storage":
+        obj.storageMonitors.push(newData);
+        break
+    }
+    json = JSON.stringify(obj); //convert it back to json
+    fs.writeFile("./" + pathString, json, 'utf8', function(){x => True}); // write it back 
+  }});
+  console.log("Wrote "+newData+" to "+key)
 }
 
 //BOT START----------------------------------

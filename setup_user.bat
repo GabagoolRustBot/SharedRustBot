@@ -1,0 +1,2 @@
+node getUserInfo.js
+PAUSE

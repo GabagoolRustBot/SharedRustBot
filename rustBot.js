@@ -6,6 +6,7 @@ const userData = require("./user.json")
 const assets = require("./assets.json")
 //const { register, listen } = require('push-receiver');     //For listener if added back
 const fs = require('fs');
+const listener = require("./universalListener")
 
 //String for name of JSON file being read (as opposed to hardcoding), can be changed via arguments later
 var pathString = "server.json"//Using hardcoding for testing
@@ -26,6 +27,21 @@ var StorageMonitors
 
 //Command key for servers where ! is being used, define in each server JSON and assign here isntead
 var commandKey = jData.serverCommandKey
+
+//Store the most recent notification from listener. Set to undefined if none / most recent has been read and deprecated
+var lastNotif = undefined
+var notifTimestamp
+//Tell when the user wants to monitor output
+var monitor = false
+//Global listener decloration
+var myListener = new listener
+//Listener behavior functions
+myListener.on("new", (notification) => {
+  //Save notificaiton object and record timestamp
+  lastNotif = notification
+  notifTimestamp = new Date().toLocaleString();
+  console.log("Bot heard " + JSON.parse(notification.data.body).entityId)
+})
 
 //Fucntion for pulling info from JSON, ran before any switch array calls for most recent data
 function readData() {
@@ -140,8 +156,20 @@ rustplus.on("connected", () => {
   console.log("Connected");
   rustplus.sendTeamMessage("BOT: Bot connected");
   // ready to send requests
+  //Update server.json
   readData()
+  //Start listener
+  myListener.listen()
 });
+
+//Send team message when heard a notif when listening
+myListener.on("new", (notification) => {
+  if(monitor){
+    var ID = "ERROR"
+    ID = JSON.parse(notification.data.body).entityId
+    rustplus.sendTeamMessage("BOT: Heard switch number: " + ID);
+  }
+})
 
 //Bot Commands
 rustplus.on("message", (message) => {
@@ -236,6 +264,51 @@ rustplus.on("message", (message) => {
       if(checkSender(str)){
         paused = true
         rustplus.sendTeamMessage("BOT: Bot is off");
+      }
+    }
+    //Prepare listener and cache for capture
+    else if(str.includes(commandKey + "listen")){
+      //Must check sender for all lisener based commands. Only owner since its only their notifs
+      if(checkSender(str)){
+        //Enable monitor for new notifs in team chat
+        monitor = true
+        //Reset cache
+        lastNotif = undefined
+        notifTimestamp = undefined
+        rustplus.sendTeamMessage("BOT: Listening, pair switch now");
+      }
+    }
+    //Optional check of the data in cache before saving
+    else if(str.includes(commandKey + "check")){
+      if(checkSender(str)){
+        //Lowest level error check
+        if(lastNotif == undefined){
+          rustplus.sendTeamMessage("BOT: Erorr, try pairing again");
+        }
+        else{
+          var body = JSON.parse(lastNotif.data.body)
+          console.log(body)
+          rustplus.sendTeamMessage("BOT: Saved notification from: " + notifTimestamp)
+          rustplus.sendTeamMessage("BOT: Type: " + body.entityName)
+          rustplus.sendTeamMessage("BOT: ID Number: " + body.entityId)
+        }
+      }
+    }
+    //Use appendJSON to add data and reset cache
+    else if(str.includes(commandKey + "addtt")){
+      if(checkSender(str)){
+        //Body as new object
+        var ID = JSON.parse(lastNotif.data.body).entityId
+        //TODO --- Error checking for notif type and values
+        //Add
+        //appendJSON(ID, "Turrets")
+        //Testing "Add"
+        console.log("Added: "+ JSON.parse(lastNotif.data.body).entityId)
+        //Notify
+        rustplus.sendTeamMessage("BOT: Switch " + ID + " added under Turrets");
+        //Reset for new messgae
+        lastNotif = undefined
+        monitor = false
       }
     }
   }

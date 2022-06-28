@@ -1,12 +1,15 @@
 //fcm-listen as seperate script for testing
 
 const { register, listen } = require('push-receiver');
-const path = require('path');
+//const path = require('path');
+var events = require('events');
 
 let server;
 let fcmClient;
 
 var configJSON = require("./rustplus.config.json")
+
+//var eventEmitter = new events.EventEmitter();
 
 async function fcmListen(options) {
   // read config file
@@ -25,15 +28,20 @@ async function fcmListen(options) {
   fcmClient = await listen(config.fcm_credentials, ({ notification, persistentId }) => {
       // parse notification body
       const body = JSON.parse(notification.data.body);
-
+      const messageID = notification.fcmMessageId
+      const entID = body.entityId
       // generate timestamp
       const timestamp = new Date().toLocaleString();
 
       // log timestamp the notification was received (in green colour)
       console.log('\x1b[32m%s\x1b[0m', `[${timestamp}] Notification Received`)
+      console.log("MESSAGE ID: " + messageID)
+      console.log("E ID: " + entID)
+
+      //console.log(notification)
 
       // log notification body
-      console.log(body);
+      //console.log(body);
 
   });
 }

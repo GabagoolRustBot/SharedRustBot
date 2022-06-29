@@ -18,13 +18,10 @@ class listener extends EventEmitter {
     if (!config.fcm_credentials) {
       console.error("FCM Credentials missing. Please run `fcm-register` first.");
       //TODO
-      //this.emit("missingCreds", ()=>{})
       process.exit(1);
       return;
     }
-
-    //console.log("Listening for FCM Notifications"); //persistentIDs not included
-
+    //Listen and send to client
     this.fcmClient = await listen(config.fcm_credentials, ({ notification, prevIDs }) => {
       // parse notification body
       const body = JSON.parse(notification.data.body);
@@ -32,17 +29,6 @@ class listener extends EventEmitter {
       this.messageQ = notification
       //Let clients know new message has been captured
       this.emit("new", notification)
-      
-      //Optional return formatting
-      //const messageID = notification.fcmMessageId
-      //const entID = body.entityId
-      
-      // generate timestamp
-      //const timestamp = new Date().toLocaleString();
-
-      // log timestamp the notification was received (in green colour)
-      //console.log('\x1b[32m%s\x1b[0m', `[${timestamp}] Notification Received`)
-      //console.log("MESSAGE ID: " + messageID)
     });
   }
 

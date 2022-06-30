@@ -30,7 +30,7 @@ myListener.listen()
 console.log("Please leave this window open and launch Rust")
 console.log("Once in game, pair anything (server/switch) 'via Rust+ menu or wire tool")
 //Stop listener and exit once found and written
-myEmitter.on('found', ()=>{
+myEmitter.on('found', () => {
   myListener.shutdown()
   console.log("DONE!")
   process.exit(0)

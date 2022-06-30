@@ -40,7 +40,7 @@ myListener.on("new", (notification) => {
   //Save notificaiton object and record timestamp
   lastNotif = notification
   notifTimestamp = new Date().toLocaleString();
-  console.log("Bot heard " + JSON.parse(notification.data.body).entityId)
+  //console.log("Bot heard " + JSON.parse(notification.data.body).entityId)
 })
 
 //Fucntion for pulling info from JSON, ran before any switch array calls for most recent data

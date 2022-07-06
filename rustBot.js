@@ -1,6 +1,7 @@
 //Scan for messages command: npx @liamcottle/rustplus.js fcm-listen
 
 const process = require('process');
+const { exec } = require('child_process');
 const RustPlus = require("@liamcottle/rustplus.js");
 const userData = require("./user.json")
 const assets = require("./assets.json")
@@ -98,36 +99,45 @@ function genericSwitch(switchType, switchPosition) {
 }
 
 //Append data to JSON. Takes data to append and the key to append to as string (TurretSwitches etc). 
-function appendJSON(newData, key) {
+function appendJSON(newData, key, rustPlusInstance) {
   fs.readFile("./" + pathString, 'utf8', function readFileCallback(err, data) {
     if (err) {
       console.log(err);
+      rustPlusInstance.sendTeamMessage("BOT: There was an error, switch not added.")
     }
     else {
       obj = JSON.parse(data);
-      //Switch keys in JSON for match
-      switch (key) {
-        case "Turrets":
-          obj.turretSwitches.push(newData);
-          break
-        case "SAMs":
-          obj.samSwitches.push(newData);
-          break
-        case "Lights":
-          obj.lightSwitches.push(newData);
-          break
-        case "Heaters":
-          obj.heaterSwitches.push(newData);
-          break
-        case "Storage":
-          obj.storageMonitors.push(newData);
-          break
+      //Check for existing
+      if(data.includes(newData)){
+        rustPlusInstance.sendTeamMessage("BOT: Switch has already been added.")
       }
-      json = JSON.stringify(obj); //convert it back to json
-      fs.writeFile("./" + pathString, json, 'utf8', function () { x => True }); // write it back 
+      //If not add
+      else{
+        switch (key) {
+          case "Turrets":
+            obj.turretSwitches.push(newData);
+            break
+          case "SAMs":
+            obj.samSwitches.push(newData);
+            break
+          case "Lights":
+            obj.lightSwitches.push(newData);
+            break
+          case "Heaters":
+            obj.heaterSwitches.push(newData);
+            break
+          case "Storage":
+            obj.storageMonitors.push(newData);
+            break
+        }
+        json = JSON.stringify(obj); //convert it back to json
+        fs.writeFile("./" + pathString, json, 'utf8', function () { x => True }); // write it back
+        rustPlusInstance.sendTeamMessage("BOT: Switch added!")
+      }
+      
     }
   });
-  console.log("Wrote " + newData + " to " + key)
+  //console.log("Wrote " + newData + " to " + key)
 }
 
 //Check to see if the message was sent by the bot owner
@@ -301,14 +311,99 @@ rustplus.on("message", (message) => {
         var ID = JSON.parse(lastNotif.data.body).entityId
         //TODO --- Error checking for notif type and values
         //Add
-        //appendJSON(ID, "Turrets")
+        appendJSON(ID, "Turrets", rustplus)
         //Testing "Add"
-        console.log("Added: "+ JSON.parse(lastNotif.data.body).entityId)
+        //console.log("Added: "+ JSON.parse(lastNotif.data.body).entityId)
         //Notify
-        rustplus.sendTeamMessage("BOT: Switch " + ID + " added under Turrets");
+        //rustplus.sendTeamMessage("BOT: Switch " + ID + " added under Turrets");
         //Reset for new messgae
         lastNotif = undefined
         monitor = false
+      }
+    }
+    else if(str.includes(commandKey + "addsam")){
+      if(checkSender(str)){
+        var ID = JSON.parse(lastNotif.data.body).entityId
+        appendJSON(ID, "SAMs", rustplus)
+        lastNotif = undefined
+        monitor = false
+      }
+    }
+    else if(str.includes(commandKey + "addlight")){
+      if(checkSender(str)){
+        var ID = JSON.parse(lastNotif.data.body).entityId
+        appendJSON(ID, "Lights", rustplus)
+        lastNotif = undefined
+        monitor = false
+      }
+    }
+    else if (str.includes(commandKey + "addheater")) {
+      if (checkSender(str)) {
+        var ID = JSON.parse(lastNotif.data.body).entityId
+        appendJSON(ID, "Heaters", rustplus)
+        lastNotif = undefined
+        monitor = false
+      }
+    }
+    //PULL / PUSH  COMMANDS
+    else if (str.includes(commandKey + "update")) {
+      if (checkSender(str)) {
+        var proc = exec('./_UPDATE.bat')
+        proc.stdout.on('data', function (data) {
+          //console.log(data.toString());
+        });
+        proc.stderr.on('data', function (data) {
+          console.log(data.toString());
+        });
+        proc.on('exit', function (code) {
+          console.log('0 if success: ' + code);
+          if (code == 0) {
+            rustplus.sendTeamMessage("BOT: Success")
+          }
+          else {
+            rustplus.sendTeamMessage("BOT: Fail, check log")
+          }
+        });
+      }
+    }
+    else if (str.includes(commandKey + "adminup")) {
+      if (checkSender(str)) {
+        var proc = exec('./push_admin.bat')
+        proc.stdout.on('data', function (data) {
+          console.log(data.toString());
+        });
+        proc.stderr.on('data', function (data) {
+          console.log(data.toString());
+        });
+        proc.on('exit', function (code) {
+          console.log('0 if success: ' + code);
+          if (code == 0) {
+            rustplus.sendTeamMessage("BOT: Success")
+          }
+          else {
+            rustplus.sendTeamMessage("BOT: Fail, check log")
+          }
+        });
+      }
+    }
+    else if (str.includes(commandKey + "upload")) {
+      if (checkSender(str)) {
+        var proc = exec('./push_guest.bat')
+        proc.stdout.on('data', function (data) {
+          //console.log(data.toString());
+        });
+        proc.stderr.on('data', function (data) {
+          console.log(data.toString());
+        });
+        proc.on('exit', function (code) {
+          console.log('0 if success: ' + code);
+          if (code == 0) {
+            rustplus.sendTeamMessage("BOT: Success")
+          }
+          else {
+            rustplus.sendTeamMessage("BOT: Fail, check log")
+          }
+        });
       }
     }
   }

@@ -13,8 +13,12 @@ PAUSE
 node newUser.js
 PAUSE
 IF EXIST "user.json" (
-    echo 'STEP 2: DONE, SETUP COMPLETE'
+    echo 'STEP 2: DONE'
 ) ELSE (
     echo 'STEP 2: ERROR, PLEASE EXIT AND RETRY'
 )
+PAUSE
+git checkout main
+PAUSE
+echo 'ALL STEPS DONE'
 PAUSE

@@ -1,6 +1,7 @@
 @echo off
 
 call npm install -g @liamcottle/rustplus.js
+call npm install -g push-receiver
 PAUSE
 call npx @liamcottle/rustplus.js fcm-register
 PAUSE

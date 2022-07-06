@@ -1,3 +1,5 @@
+@echo off
+
 git config user.email 'gabagoolRust@gmail.com'
 git add --all
 git commit -m "Guest Commit"

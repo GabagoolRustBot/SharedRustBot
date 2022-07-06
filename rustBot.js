@@ -346,7 +346,7 @@ rustplus.on("message", (message) => {
       }
     }
     //PULL / PUSH  COMMANDS
-    else if (str.includes(commandKey + "update")) {
+    else if (str.includes(commandKey + "refresh")) {
       if (checkSender(str)) {
         var proc = exec('_UPDATE.bat')
         proc.stdout.on('data', function (data) {
@@ -356,7 +356,7 @@ rustplus.on("message", (message) => {
           console.log(data.toString());
         });
         proc.on('exit', function (code) {
-          console.log('0 if success: ' + code);
+          //console.log('0 if success: ' + code);
           if (code == 0) {
             rustplus.sendTeamMessage("BOT: Success")
           }
@@ -376,7 +376,7 @@ rustplus.on("message", (message) => {
           console.log(data.toString());
         });
         proc.on('exit', function (code) {
-          console.log('0 if success: ' + code);
+          //console.log('0 if success: ' + code);
           if (code == 0) {
             rustplus.sendTeamMessage("BOT: Success")
           }
@@ -396,7 +396,7 @@ rustplus.on("message", (message) => {
           console.log(data.toString());
         });
         proc.on('exit', function (code) {
-          console.log('0 if success: ' + code);
+          //console.log('0 if success: ' + code);
           if (code == 0) {
             rustplus.sendTeamMessage("BOT: Success")
           }

@@ -348,7 +348,7 @@ rustplus.on("message", (message) => {
     //PULL / PUSH  COMMANDS
     else if (str.includes(commandKey + "update")) {
       if (checkSender(str)) {
-        var proc = exec('./_UPDATE.bat')
+        var proc = exec('_UPDATE.bat')
         proc.stdout.on('data', function (data) {
           //console.log(data.toString());
         });
@@ -368,7 +368,7 @@ rustplus.on("message", (message) => {
     }
     else if (str.includes(commandKey + "adminup")) {
       if (checkSender(str)) {
-        var proc = exec('./push_admin.bat')
+        var proc = exec('pushAdmin.bat')
         proc.stdout.on('data', function (data) {
           console.log(data.toString());
         });
@@ -388,7 +388,7 @@ rustplus.on("message", (message) => {
     }
     else if (str.includes(commandKey + "upload")) {
       if (checkSender(str)) {
-        var proc = exec('./push_guest.bat')
+        var proc = exec('pushGuest.bat')
         proc.stdout.on('data', function (data) {
           //console.log(data.toString());
         });

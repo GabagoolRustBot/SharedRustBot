@@ -1,15 +1,1 @@
-{
-  "serverName": "Intoxicated US Sandbox - Creative | Build | Noclip",
-  "serverIP": "8.26.94.147",
-  "serverPort": "27161",
-  "serverCommandKey": "@",
-  "samSwitches": [
-    "30540122",
-    "24655947"
-  ],
-  "turretSwitches": [
-    "24623921",
-    "30735825",
-    "33333333"
-  ]
-}
+{"serverName":"Intoxicated US Sandbox - Creative | Build | Noclip","serverIP":"8.26.94.147","serverPort":"27161","serverCommandKey":"@","samSwitches":["30540122","24655947"],"turretSwitches":["24623921","30735825","33333333","45917046"]}

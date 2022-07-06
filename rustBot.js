@@ -386,7 +386,7 @@ rustplus.on("message", (message) => {
         });
       }
     }
-    else if (str.includes(commandKey + "upload")) {
+    /*else if (str.includes(commandKey + "upload")) {
       if (checkSender(str)) {
         var proc = exec('pushGuest.bat')
         proc.stdout.on('data', function (data) {
@@ -405,7 +405,7 @@ rustplus.on("message", (message) => {
           }
         });
       }
-    }
+    }*/
   }
   //If paused, still process these commands
   else {

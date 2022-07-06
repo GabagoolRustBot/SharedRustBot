@@ -1,6 +1,6 @@
 @echo off
 
-call npm install @liamcottle/rustplus.js
+call npm install -g @liamcottle/rustplus.js
 PAUSE
 call npx @liamcottle/rustplus.js fcm-register
 PAUSE
@@ -10,7 +10,7 @@ IF EXIST "rustplus.config.json" (
     echo 'STEP 1: ERROR, PLEASE EXIT AND RETRY'
 )
 PAUSE
-node newUser.js
+call node newUser.js
 PAUSE
 IF EXIST "user.json" (
     echo 'STEP 2: DONE'

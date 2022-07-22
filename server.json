@@ -1,10 +1,17 @@
 {
-  "serverName": "Rustopia US Large",
+  "serverName": "Rustopia US Small",
   "serverIP": "208.52.152.118",
-  "serverPort": "28095",
+  "serverPort": "28145",
   "serverCommandKey": "!",
-  "turretSwitches": [],
-  "samSwitches": [],
+  "turretSwitches": [
+    "105554492",
+    "120123244"
+  ],
+  "samSwitches": [
+    "121510481"
+  ],
   "heatSwitches": [],
-  "lightSwitches": []
+  "lightSwitches": [
+    "105586066"
+  ]
 }

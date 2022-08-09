@@ -1,17 +1,1 @@
-{
-  "serverName": "Rustopia US Small",
-  "serverIP": "208.52.152.118",
-  "serverPort": "28145",
-  "serverCommandKey": "!",
-  "turretSwitches": [
-    "105554492",
-    "120123244"
-  ],
-  "samSwitches": [
-    "121510481"
-  ],
-  "heatSwitches": [],
-  "lightSwitches": [
-    "105586066"
-  ]
-}
+{"serverName":"Rustopia US Small","serverIP":"104.152.143.212","serverPort":"28085","serverCommandKey":"!","turretSwitches":["16467585","11708582","20054261","20032588","20122842","20132704","20284763"],"samSwitches":["21221250","21254335","21269331"],"heatSwitches":["11699856"],"lightSwitches":["20043754"]}
